@@ -90,20 +90,51 @@
     text-align: left;
 }
 
-/* Chapter Divider */
+/* Drop Cap - First letter of first paragraph */
+.chapter-content p:first-of-type::first-letter {
+    float: left;
+    font-size: 4rem;
+    line-height: 0.8;
+    font-weight: 700;
+    padding-right: 12px;
+    padding-top: 8px;
+    color: var(--accent-color);
+    font-family: var(--font-serif);
+}
+
+/* Chapter Divider - Decorative ornament between chapters */
 .chapter-divider {
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 40px 0;
+    margin: 60px 0;
+    position: relative;
+}
+
+.chapter-divider::before,
+.chapter-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to var(--direction), transparent, var(--accent-color) 50%, transparent);
+    opacity: 0.4;
 }
 
 .chapter-divider::before {
-    content: '• • •';
+    --direction: right;
+    margin-right: 20px;
+}
+
+.chapter-divider::after {
+    --direction: left;
+    margin-left: 20px;
+}
+
+.chapter-divider-symbol {
     color: var(--accent-color);
-    font-size: 1.2rem;
-    letter-spacing: 8px;
+    font-size: 1.5rem;
+    opacity: 0.7;
 }
 
 /* Comment Preview */

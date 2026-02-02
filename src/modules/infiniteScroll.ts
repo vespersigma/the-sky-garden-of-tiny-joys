@@ -113,9 +113,10 @@ export async function appendChapter(arcIdx: number, chapterIdx: number): Promise
             const arcEndCard = createArcEndCard(arcIdx);
             chapterDiv.appendChild(arcEndCard);
         } else {
-            // Add chapter divider
+            // Add chapter divider with decorative symbol
             const divider = document.createElement('div');
             divider.className = 'chapter-divider';
+            divider.innerHTML = '<span class="chapter-divider-symbol">✦</span>';
             chapterDiv.appendChild(divider);
         }
 
