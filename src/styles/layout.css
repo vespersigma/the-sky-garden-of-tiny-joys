@@ -149,6 +149,7 @@
 
 /* Overlay */
 #overlay {
+    display: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -176,10 +177,6 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-}
-
-#loading-overlay.hidden {
-    display: none;
 }
 
 .spinner {

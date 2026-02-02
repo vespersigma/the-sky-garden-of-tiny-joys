@@ -330,11 +330,16 @@ body.hide-comments .comment-preview {
     justify-content: space-between;
     align-items: center;
     padding: 25px 20px;
-    margin-bottom: 40px;
     background: linear-gradient(135deg, var(--card-bg) 0%, transparent 100%);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     font-family: var(--font-sans);
+}
+
+/* When inside arc-end-card, add top margin */
+.arc-end-card .arc-navigation {
+    margin-top: 30px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .arc-nav-title {

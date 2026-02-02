@@ -155,6 +155,24 @@ function createArcEndCard(arcIdx: number): HTMLElement {
     const card = document.createElement('div');
     card.className = 'arc-end-card';
 
+    // Build arc navigation HTML
+    const hasPrevArc = arcIdx > 0;
+    const prevArc = hasPrevArc ? state.manifest.arcs[arcIdx - 1] : null;
+    const arcNavHtml = `
+        <div class="arc-navigation">
+            <button class="arc-nav-btn prev-arc" ${!hasPrevArc ? 'disabled' : ''}>
+                ${hasPrevArc ? `← Arc ${prevArc!.number}` : '← Prev'}
+            </button>
+            <div class="arc-nav-title">
+                <span class="arc-label">Arc ${arc.number}</span>
+                <span class="arc-name">${arc.name}</span>
+            </div>
+            <button class="arc-nav-btn next-arc" ${!hasNextArc ? 'disabled' : ''}>
+                ${hasNextArc ? `Arc ${nextArc!.number} →` : 'Next →'}
+            </button>
+        </div>
+    `;
+
     if (hasNextArc && nextArc) {
         // More arcs available
         card.innerHTML = `
@@ -167,6 +185,7 @@ function createArcEndCard(arcIdx: number): HTMLElement {
       <button class="arc-continue-btn" data-next-arc="${arcIdx + 1}">
         Continue Reading →
       </button>
+      ${arcNavHtml}
     `;
 
         // Attach event listener
@@ -181,6 +200,7 @@ function createArcEndCard(arcIdx: number): HTMLElement {
       <div class="arc-end-divider"></div>
       <p class="arc-end-ongoing">This story is still being written.</p>
       <p class="arc-end-thanks">More chapters coming soon! ✨</p>
+      ${arcNavHtml}
     `;
     } else if (isHiatus) {
         // Story is on hiatus
@@ -191,6 +211,7 @@ function createArcEndCard(arcIdx: number): HTMLElement {
       <div class="arc-end-divider"></div>
       <p class="arc-end-ongoing">This story is currently on hiatus.</p>
       <p class="arc-end-thanks">Thank you for reading!</p>
+      ${arcNavHtml}
     `;
     } else {
         // Story is completed
@@ -199,8 +220,13 @@ function createArcEndCard(arcIdx: number): HTMLElement {
       <h3 class="arc-end-title">The End</h3>
       <p class="arc-end-subtitle">${arc.name}</p>
       <p class="arc-end-thanks">Thank you for reading!</p>
+      ${arcNavHtml}
     `;
     }
+
+    // Attach navigation handlers
+    card.querySelector('.prev-arc')?.addEventListener('click', () => navigateToArc(arcIdx - 1));
+    card.querySelector('.next-arc')?.addEventListener('click', () => navigateToArc(arcIdx + 1));
 
     return card;
 }
@@ -229,35 +255,6 @@ export async function navigateToArc(arcIdx: number): Promise<void> {
 
     // Get arc info
     const arc = state.manifest.arcs[arcIdx];
-    const hasPrevArc = arcIdx > 0;
-    const hasNextArc = arcIdx < state.manifest.arcs.length - 1;
-    const prevArc = hasPrevArc ? state.manifest.arcs[arcIdx - 1] : null;
-    const nextArc = hasNextArc ? state.manifest.arcs[arcIdx + 1] : null;
-
-    // Create arc navigation header
-    const arcNav = document.createElement('div');
-    arcNav.className = 'arc-navigation';
-    arcNav.innerHTML = `
-        <button class="arc-nav-btn prev-arc" ${!hasPrevArc ? 'disabled' : ''}>
-            ${hasPrevArc ? `← Arc ${prevArc!.number}` : '← Prev'}
-        </button>
-        <div class="arc-nav-title">
-            <span class="arc-label">Arc ${arc.number}</span>
-            <span class="arc-name">${arc.name}</span>
-        </div>
-        <button class="arc-nav-btn next-arc" ${!hasNextArc ? 'disabled' : ''}>
-            ${hasNextArc ? `Arc ${nextArc!.number} →` : 'Next →'}
-        </button>
-    `;
-
-    // Attach navigation handlers
-    arcNav.querySelector('.prev-arc')?.addEventListener('click', () => navigateToArc(arcIdx - 1));
-    arcNav.querySelector('.next-arc')?.addEventListener('click', () => navigateToArc(arcIdx + 1));
-
-    // Insert at beginning of content (before sentinel)
-    if (elements.content && scrollSentinel) {
-        elements.content.insertBefore(arcNav, scrollSentinel);
-    }
 
     // Update hidden nav info for compatibility
     if (elements.chapterInfo) {
