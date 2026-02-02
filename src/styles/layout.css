@@ -36,9 +36,17 @@
 }
 
 #novel-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--heading-color);
+    max-width: 50%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #menu-toggle {
