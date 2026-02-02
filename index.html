@@ -1,14 +1,57 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Sky-Garden of Tiny Joys</title>
-    <meta name="description" content="An immersive novel reading experience.">
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vesper Reader</title>
+  <meta name="description" content="An immersive novel reading experience.">
+</head>
+
+<body>
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p id="loading-status">Awakening...</p>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Navigation -->
+  <nav id="nav">
+    <button id="menu-toggle" aria-label="Open menu">☰</button>
+    <div id="chapter-info">
+      <span id="current-chapter">Loading...</span>
+    </div>
+    <div id="nav-controls">
+      <button id="prev-chapter" aria-label="Previous chapter">←</button>
+      <button id="next-chapter" aria-label="Next chapter">→</button>
+      <button id="zen-toggle" aria-label="Zen mode">🧘</button>
+      <button id="settings-toggle" aria-label="Settings">⚙️</button>
+      <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div id="overlay"></div>
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h2>Chapters</h2>
+      <button id="close-menu" aria-label="Close menu">✕</button>
+    </div>
+    <div id="chapter-list"></div>
+  </aside>
+
+  <!-- Main content -->
+  <main id="app">
+    <div id="content"></div>
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
