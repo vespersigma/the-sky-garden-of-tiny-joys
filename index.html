@@ -21,14 +21,17 @@
   <!-- Progress bar -->
   <div id="progress-bar"></div>
 
-  <!-- Navigation -->
-  <nav id="nav">
-    <button id="menu-toggle" aria-label="Open menu">☰</button>
-    <div id="chapter-info">
-      <span id="current-chapter">Loading...</span>
-    </div>
-    <div id="nav-controls">
+  <!-- Top Navigation -->
+  <nav id="top-nav">
+    <button id="menu-toggle" aria-label="Open menu">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </button>
+    <span id="novel-title">Loading...</span>
+    <div id="controls">
       <button id="prev-chapter" aria-label="Previous chapter">←</button>
+      <span id="chapter-info">Ch 1</span>
       <button id="next-chapter" aria-label="Next chapter">→</button>
       <button id="zen-toggle" aria-label="Zen mode">🧘</button>
       <button id="settings-toggle" aria-label="Settings">⚙️</button>
@@ -38,7 +41,7 @@
 
   <!-- Sidebar -->
   <div id="overlay"></div>
-  <aside id="sidebar">
+  <aside id="sidebar" class="hidden">
     <div class="sidebar-header">
       <h2>Chapters</h2>
       <button id="close-menu" aria-label="Close menu">✕</button>
