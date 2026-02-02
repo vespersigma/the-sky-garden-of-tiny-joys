@@ -165,7 +165,7 @@
     min-height: 200px;
     max-height: 400px;
     /* Limit to ~3 comments */
-    overflow-y: auto;
+    overflow-y: hidden;
     position: relative;
 }
 
@@ -313,4 +313,69 @@ body.hide-comments .comment-preview {
     .comment-preview {
         padding: 15px;
     }
+
+    .arc-navigation {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .arc-nav-btn {
+        width: 100%;
+    }
+}
+
+/* Arc Navigation Header */
+.arc-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 20px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, var(--card-bg) 0%, transparent 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: var(--font-sans);
+}
+
+.arc-nav-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.arc-nav-title .arc-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+}
+
+.arc-nav-title .arc-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.arc-nav-btn {
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.arc-nav-btn:hover:not(:disabled) {
+    background: var(--accent-color);
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.arc-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }

@@ -227,8 +227,39 @@ export async function navigateToArc(arcIdx: number): Promise<void> {
         }
     }
 
-    // Update nav info
+    // Get arc info
     const arc = state.manifest.arcs[arcIdx];
+    const hasPrevArc = arcIdx > 0;
+    const hasNextArc = arcIdx < state.manifest.arcs.length - 1;
+    const prevArc = hasPrevArc ? state.manifest.arcs[arcIdx - 1] : null;
+    const nextArc = hasNextArc ? state.manifest.arcs[arcIdx + 1] : null;
+
+    // Create arc navigation header
+    const arcNav = document.createElement('div');
+    arcNav.className = 'arc-navigation';
+    arcNav.innerHTML = `
+        <button class="arc-nav-btn prev-arc" ${!hasPrevArc ? 'disabled' : ''}>
+            ${hasPrevArc ? `← Arc ${prevArc!.number}` : '← Prev'}
+        </button>
+        <div class="arc-nav-title">
+            <span class="arc-label">Arc ${arc.number}</span>
+            <span class="arc-name">${arc.name}</span>
+        </div>
+        <button class="arc-nav-btn next-arc" ${!hasNextArc ? 'disabled' : ''}>
+            ${hasNextArc ? `Arc ${nextArc!.number} →` : 'Next →'}
+        </button>
+    `;
+
+    // Attach navigation handlers
+    arcNav.querySelector('.prev-arc')?.addEventListener('click', () => navigateToArc(arcIdx - 1));
+    arcNav.querySelector('.next-arc')?.addEventListener('click', () => navigateToArc(arcIdx + 1));
+
+    // Insert at beginning of content (before sentinel)
+    if (elements.content && scrollSentinel) {
+        elements.content.insertBefore(arcNav, scrollSentinel);
+    }
+
+    // Update hidden nav info for compatibility
     if (elements.chapterInfo) {
         elements.chapterInfo.textContent = `Arc ${arc.number}: ${arc.name}`;
     }

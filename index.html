@@ -30,9 +30,6 @@
     </button>
     <span id="novel-title">Loading...</span>
     <div id="controls">
-      <span id="chapter-info"></span>
-      <button id="prev-chapter" aria-label="Previous arc" title="Previous Arc">◄</button>
-      <button id="next-chapter" aria-label="Next arc" title="Next Arc">►</button>
       <button id="zen-toggle" aria-label="Zen mode" title="Zen Mode">🧘</button>
       <button id="settings-toggle" aria-label="Settings" title="Settings">⚙️</button>
       <button id="theme-toggle" aria-label="Toggle theme" title="Toggle Theme">🌙</button>
@@ -53,6 +50,11 @@
   <main id="app">
     <div id="content"></div>
   </main>
+
+  <!-- Hidden elements for JS compatibility -->
+  <div id="chapter-info" style="display:none"></div>
+  <button id="prev-chapter" style="display:none"></button>
+  <button id="next-chapter" style="display:none"></button>
 
   <script type="module" src="/src/main.ts"></script>
 </body>

@@ -178,6 +178,10 @@
     z-index: 1000;
 }
 
+#loading-overlay.hidden {
+    display: none;
+}
+
 .spinner {
     width: 40px;
     height: 40px;
