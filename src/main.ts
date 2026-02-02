@@ -182,6 +182,13 @@ async function init(): Promise<void> {
         applySavedTheme();
         initSettings();
 
+        // Set novel title from manifest
+        const novelTitle = document.getElementById('novel-title');
+        if (novelTitle && state.manifest.title) {
+            novelTitle.textContent = state.manifest.title;
+            document.title = `${state.manifest.title} - Vesper Reader`;
+        }
+
         // 4. Setup Infinite Scroll (must be before syncProgress)
         setupInfiniteScroll();
 

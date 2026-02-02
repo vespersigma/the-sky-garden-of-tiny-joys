@@ -171,9 +171,6 @@ export function updateNavButtons(): void {
     if (!elements.prevChapter || !elements.nextChapter || !state.manifest) return;
 
     elements.prevChapter.disabled = state.currentArcIdx === 0;
-    elements.prevChapter.textContent = 'Prev Arc';
-
     elements.nextChapter.disabled = state.currentArcIdx >= state.manifest.arcs.length - 1;
-    elements.nextChapter.textContent = 'Next Arc';
 }
 
