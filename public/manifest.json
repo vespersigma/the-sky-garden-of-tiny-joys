@@ -9,11 +9,11 @@
             "chapters": [
                 {
                     "id": "01",
-                    "name": "The First Sensation"
+                    "name": "chapter 01"
                 },
                 {
                     "id": "02",
-                    "name": "The Baker's Warmth"
+                    "name": "chapter 02"
                 }
             ]
         }

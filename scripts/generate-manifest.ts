@@ -33,12 +33,16 @@ function extractChapterName(filePath: string): string {
     const content = fs.readFileSync(filePath, 'utf-8');
     const lines = content.split('\n');
 
-    // Look for first heading or first non-empty line
     for (const line of lines) {
         const trimmed = line.trim();
-        // Skip metadata lines like "Arc 1" or "Chapter 01"
-        if (trimmed.startsWith('Arc ') || trimmed.startsWith('Chapter ')) continue;
-        // Use markdown heading
+
+        // Format: "Chapter 1: The First Sensation" or "Chapter 01: Title"
+        const chapterMatch = trimmed.match(/^Chapter\s+\d+[:\s]+(.+)$/i);
+        if (chapterMatch) {
+            return chapterMatch[1].trim();
+        }
+
+        // Format: "# The Chapter Title" (markdown heading)
         if (trimmed.startsWith('# ')) {
             return trimmed.replace(/^#+\s*/, '');
         }
