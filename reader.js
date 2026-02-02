@@ -55,11 +55,11 @@ const VesperSystem = {
             this.applySavedTheme();
             this.applySavedFontSize();
 
-            // 4. Restore Context or start fresh
-            await this.syncProgress();
-
-            // 5. Setup Infinite Scroll
+            // 4. Setup Infinite Scroll (must be before syncProgress)
             this.setupInfiniteScroll();
+
+            // 5. Restore Context or start fresh
+            await this.syncProgress();
 
             // 6. Clear Overlay
             if (this.elements.loadingOverlay) {
@@ -77,7 +77,7 @@ const VesperSystem = {
             'content', 'chapter-info', 'prev-chapter', 'next-chapter',
             'menu-toggle', 'close-menu', 'sidebar', 'overlay',
             'theme-toggle', 'chapter-list', 'loading-overlay', 'loading-status',
-            'progress-bar', 'font-increase', 'font-decrease'
+            'progress-bar', 'font-increase', 'font-decrease', 'zen-toggle'
         ];
 
         ids.forEach(id => {
@@ -98,6 +98,10 @@ const VesperSystem = {
         // Font size controls
         if (this.elements.fontIncrease) this.elements.fontIncrease.onclick = () => this.adjustFontSize(1);
         if (this.elements.fontDecrease) this.elements.fontDecrease.onclick = () => this.adjustFontSize(-1);
+
+        // Zen mode
+        if (this.elements.zenToggle) this.elements.zenToggle.onclick = () => this.toggleZenMode();
+        this.createZenExitButton();
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
@@ -504,8 +508,49 @@ const VesperSystem = {
                 this.navigateToArc(this.state.currentArcIdx + 1);
                 break;
             case 'Escape':
-                this.toggleMenu(false);
+                if (document.body.classList.contains('zen-mode')) {
+                    this.toggleZenMode();
+                } else {
+                    this.toggleMenu(false);
+                }
                 break;
+            case 'z':
+            case 'Z':
+                this.toggleZenMode();
+                break;
+        }
+    },
+
+    // === ZEN MODE ===
+
+    createZenExitButton() {
+        const exitBtn = document.createElement('button');
+        exitBtn.id = 'zen-exit';
+        exitBtn.innerHTML = '✕';
+        exitBtn.title = 'Exit Zen Mode (Esc)';
+        exitBtn.onclick = () => this.toggleZenMode();
+        document.body.appendChild(exitBtn);
+    },
+
+    toggleZenMode() {
+        document.body.classList.toggle('zen-mode');
+        const isZen = document.body.classList.contains('zen-mode');
+
+        if (isZen) {
+            this.log('ZEN', 'Entering tranquility...');
+            // Scroll to center content a bit
+            window.scrollBy(0, -50);
+        } else {
+            this.log('ZEN', 'Returning to reality.');
+        }
+
+        localStorage.setItem('vesper-zen', isZen ? 'on' : 'off');
+    },
+
+    applySavedZenMode() {
+        const savedZen = localStorage.getItem('vesper-zen');
+        if (savedZen === 'on') {
+            document.body.classList.add('zen-mode');
         }
     }
 };
