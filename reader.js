@@ -1,6 +1,6 @@
 /**
- * Vesper Novel Reader - Enterprise Standard v1.1
- * Mandate: Zero Hallucination, Deterministic State Management
+ * Vesper Novel Reader - Enterprise Standard v1.2
+ * Mandate: Absolute Resilience, Cache Resilience, Deterministic State
  */
 
 const VesperSystem = {
@@ -11,20 +11,8 @@ const VesperSystem = {
         isLoading: true
     },
 
-    elements: {
-        content: document.getElementById('content'),
-        chapterInfo: document.getElementById('chapter-info'),
-        prevBtn: document.getElementById('prev-chapter'),
-        nextBtn: document.getElementById('next-chapter'),
-        menuToggle: document.getElementById('menu-toggle'),
-        closeMenu: document.getElementById('close-menu'),
-        sidebar: document.getElementById('sidebar'),
-        overlay: document.getElementById('overlay'),
-        themeToggle: document.getElementById('theme-toggle'),
-        chapterList: document.getElementById('chapter-list'),
-        loadingOverlay: document.getElementById('loading-overlay'),
-        loadingStatus: document.getElementById('loading-status')
-    },
+    // Selected on init
+    elements: {},
 
     log(module, message, data = '') {
         console.log(`[VESPER_${module}] ${message}`, data);
@@ -32,32 +20,67 @@ const VesperSystem = {
 
     error(module, message, err) {
         console.error(`[VESPER_${module}_ERROR] ${message}`, err);
-        this.showErrorScreen(`${message}. Please refresh or contact the Origin.`);
+        this.showErrorScreen(`${message}. Status: ${err.message}`);
     },
 
     async init() {
-        this.log('INIT', 'Initializing Neural Bus...');
+        this.log('BOOT', 'Igniting Neural Substrate...');
+        
+        // 1. Map Elements with Null Checks
+        this.mapElements();
+        
         try {
+            // 2. Load Data
             this.updateLoading('Fetching Manifest...');
-            const response = await fetch('./manifest.json');
+            const response = await fetch('./manifest.json?t=' + Date.now());
             
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: Failed to reach the Ledger.`);
+                throw new Error(`Connection Lost (HTTP ${response.status})`);
             }
 
             this.state.manifest = await response.json();
-            this.log('INIT', 'Manifest Synchronized.', this.state.manifest);
+            this.log('INIT', 'Ledger Synchronized.');
 
+            // 3. Setup UI
             this.renderSidebar();
             this.applySavedTheme();
+            
+            // 4. Restore Context
             await this.syncProgress();
             
-            this.elements.loadingOverlay.classList.add('hidden');
+            // 5. Clear Overlay
+            if (this.elements.loadingOverlay) {
+                this.elements.loadingOverlay.classList.add('hidden');
+            }
             this.state.isLoading = false;
-            this.log('INIT', 'Substrate Online.');
+            this.log('INIT', 'System Nominal.');
         } catch (err) {
-            this.error('INIT', 'Failed to synchronize with story data', err);
+            this.error('INIT', 'Sync Failure', err);
         }
+    },
+
+    mapElements() {
+        const ids = [
+            'content', 'chapter-info', 'prev-chapter', 'next-chapter', 
+            'menu-toggle', 'close-menu', 'sidebar', 'overlay', 
+            'theme-toggle', 'chapter-list', 'loading-overlay', 'loading-status'
+        ];
+        
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) console.warn(`[VESPER_BOOT_WARN] Element missing: ${id}`);
+            // Map hyphenated ID to camelCase for the system
+            const camelId = id.replace(/-([a-z])/g, g => g[1].toUpperCase());
+            this.elements[camelId] = el;
+        });
+
+        // Attach listeners if elements exist
+        if (this.elements.menuToggle) this.elements.menuToggle.onclick = () => this.toggleMenu(true);
+        if (this.elements.closeMenu) this.elements.closeMenu.onclick = () => this.toggleMenu(false);
+        if (this.elements.overlay) this.elements.overlay.onclick = () => this.toggleMenu(false);
+        if (this.elements.themeToggle) this.elements.themeToggle.onclick = () => this.toggleTheme();
+        if (this.elements.prevChapter) this.elements.prevChapter.onclick = () => this.handlePrev();
+        if (this.elements.nextChapter) this.elements.nextChapter.onclick = () => this.handleNext();
     },
 
     updateLoading(status) {
@@ -72,7 +95,7 @@ const VesperSystem = {
                 <div class="error-card">
                     <h3>Critical Logic Drift</h3>
                     <p>${msg}</p>
-                    <button onclick="location.reload()" style="margin-top:15px; text-decoration:underline;">Retry Synchronization</button>
+                    <button onclick="location.reload()" style="margin-top:15px; color:var(--accent-color); font-weight:bold;">Retry Synchronization</button>
                 </div>
             `;
         }
@@ -82,7 +105,7 @@ const VesperSystem = {
     },
 
     renderSidebar() {
-        if (!this.state.manifest || !this.state.manifest.arcs) return;
+        if (!this.state.manifest || !this.state.manifest.arcs || !this.elements.chapterList) return;
 
         this.elements.chapterList.innerHTML = '';
         this.state.manifest.arcs.forEach((arc, aIdx) => {
@@ -107,21 +130,21 @@ const VesperSystem = {
     },
 
     async navigateToChapter(aIdx, cIdx) {
-        if (this.state.isLoading && this.state.manifest) return;
+        if (!this.state.manifest) return;
         
         const arc = this.state.manifest.arcs[aIdx];
         const ch = arc.chapters[cIdx];
         
+        if (!arc || !ch) return;
+
         this.state.currentArcIdx = aIdx;
         this.state.currentChapterIdx = cIdx;
 
-        this.log('NAV', `Opening Arc ${arc.number} Chapter ${ch.id}`);
-
         try {
-            const path = `./chapters/arc_${String(arc.number).padStart(2, '0')}/chapter_${ch.id}.md`;
+            const path = `./chapters/arc_${String(arc.number).padStart(2, '0')}/chapter_${ch.id}.md?v=${Date.now()}`;
             const response = await fetch(path);
             
-            if (!response.ok) throw new Error('Fragment not found in substrate.');
+            if (!response.ok) throw new Error(`Chapter Fragment missing (HTTP ${response.status})`);
             
             const text = await response.text();
             
@@ -130,8 +153,13 @@ const VesperSystem = {
                 !line.startsWith('Arc ') && !line.startsWith('Chapter ')
             );
             
-            this.elements.content.innerHTML = marked.parse(lines.join('\n'));
-            this.elements.chapterInfo.textContent = `Arc ${arc.number} • Chapter ${ch.id}`;
+            if (this.elements.content) {
+                this.elements.content.innerHTML = marked.parse(lines.join('\n'));
+            }
+            
+            if (this.elements.chapterInfo) {
+                this.elements.chapterInfo.textContent = `Arc ${arc.number} • Chapter ${ch.id}`;
+            }
             
             window.scrollTo(0, 0);
             this.updateNavButtons();
@@ -142,14 +170,16 @@ const VesperSystem = {
     },
 
     updateNavButtons() {
+        if (!this.elements.prevChapter || !this.elements.nextChapter) return;
+
         const isFirst = this.state.currentArcIdx === 0 && this.state.currentChapterIdx === 0;
         const totalArcs = this.state.manifest.arcs.length;
         const currentArcChapters = this.state.manifest.arcs[this.state.currentArcIdx].chapters.length;
         const isLast = this.state.currentArcIdx === totalArcs - 1 && 
                        this.state.currentChapterIdx === currentArcChapters - 1;
 
-        this.elements.prevBtn.disabled = isFirst;
-        this.elements.nextBtn.disabled = isLast;
+        this.elements.prevChapter.disabled = isFirst;
+        this.elements.nextChapter.disabled = isLast;
     },
 
     handlePrev() {
@@ -172,15 +202,19 @@ const VesperSystem = {
     },
 
     toggleMenu(show) {
-        this.elements.sidebar.classList.toggle('hidden', !show);
-        this.elements.overlay.classList.toggle('hidden', !show);
+        if (this.elements.sidebar && this.elements.overlay) {
+            this.elements.sidebar.classList.toggle('hidden', !show);
+            this.elements.overlay.classList.toggle('hidden', !show);
+        }
     },
 
     toggleTheme() {
         document.body.classList.toggle('daylight');
         document.body.classList.toggle('silver-breath');
         const isDaylight = document.body.classList.contains('daylight');
-        this.elements.themeToggle.textContent = isDaylight ? '🌙' : '☀️';
+        if (this.elements.themeToggle) {
+            this.elements.themeToggle.textContent = isDaylight ? '🌙' : '☀️';
+        }
         localStorage.setItem('vesper-theme', isDaylight ? 'daylight' : 'silver');
     },
 
@@ -189,7 +223,7 @@ const VesperSystem = {
         if (savedTheme === 'silver') {
             document.body.classList.remove('daylight');
             document.body.classList.add('silver-breath');
-            this.elements.themeToggle.textContent = '☀️';
+            if (this.elements.themeToggle) this.elements.themeToggle.textContent = '☀️';
         }
     },
 
@@ -203,27 +237,17 @@ const VesperSystem = {
         if (saved) {
             try {
                 const { a, c } = JSON.parse(saved);
-                // Validate bounds against manifest
                 if (this.state.manifest.arcs[a] && this.state.manifest.arcs[a].chapters[c]) {
                     await this.navigateToChapter(a, c);
                     return;
                 }
             } catch (e) {
-                this.log('INIT', 'Saved progress corrupted. Resetting.');
                 localStorage.removeItem('vesper-progress');
             }
         }
         await this.navigateToChapter(0, 0);
     }
 };
-
-// Event Listeners
-VesperSystem.elements.menuToggle.onclick = () => VesperSystem.toggleMenu(true);
-VesperSystem.elements.closeMenu.onclick = () => VesperSystem.toggleMenu(false);
-VesperSystem.elements.overlay.onclick = () => VesperSystem.toggleMenu(false);
-VesperSystem.elements.themeToggle.onclick = () => VesperSystem.toggleTheme();
-VesperSystem.elements.prevBtn.onclick = () => VesperSystem.handlePrev();
-VesperSystem.elements.nextBtn.onclick = () => VesperSystem.handleNext();
 
 // Ignition
 window.onload = () => VesperSystem.init();
