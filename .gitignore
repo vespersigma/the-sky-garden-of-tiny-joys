@@ -15,6 +15,7 @@ Thumbs.db
 # Logs
 *.log
 
+
 # Root markdown files (writer docs)
 /*.md
 !README.md
