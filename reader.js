@@ -51,6 +51,7 @@ function renderSidebar() {
 }
 
 async function loadChapter(aIdx, cIdx) {
+    if (!manifest) return;
     const arc = manifest.arcs[aIdx];
     const ch = arc.chapters[cIdx];
     
@@ -58,8 +59,9 @@ async function loadChapter(aIdx, cIdx) {
     currentChapterIdx = cIdx;
 
     try {
-        const path = `arc_${String(arc.number).padStart(2, '0')}/chapter_${ch.id}.md`;
+        const path = `chapters/arc_${String(arc.number).padStart(2, '0')}/chapter_${ch.id}.md`;
         const response = await fetch(path);
+        if (!response.ok) throw new Error('File not found');
         const text = await response.text();
         
         // Remove metadata lines
@@ -73,7 +75,7 @@ async function loadChapter(aIdx, cIdx) {
         saveProgress();
     } catch (err) {
         console.error('Failed to load chapter:', err);
-        contentEl.innerHTML = '<p>Error loading chapter content.</p>';
+        contentEl.innerHTML = `<p>Error loading chapter content: ${err.message}</p>`;
     }
 }
 
