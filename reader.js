@@ -8,8 +8,6 @@ const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 const themeToggle = document.getElementById('theme-toggle');
 const chapterListEl = document.getElementById('chapter-list');
-const welcomeScreen = document.getElementById('welcome-screen');
-const resumeBtn = document.getElementById('resume-button');
 
 let manifest = null;
 let currentArcIdx = 0;
@@ -138,12 +136,13 @@ function checkProgress() {
     }
 
     if (saved) {
-        welcomeScreen.classList.remove('hidden');
-        resumeBtn.onclick = () => {
-            const { a, c } = JSON.parse(saved);
+        const { a, c } = JSON.parse(saved);
+        // Ensure indices are still valid in manifest
+        if (manifest.arcs[a] && manifest.arcs[a].chapters[c]) {
             loadChapter(a, c);
-            welcomeScreen.classList.add('hidden');
-        };
+        } else {
+            loadChapter(0, 0);
+        }
     } else {
         loadChapter(0, 0);
     }
