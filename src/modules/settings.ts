@@ -12,7 +12,7 @@ const defaultSettings: Settings = {
   lineSpacing: 'comfortable',
   contentWidth: 'medium',
   autoHideComments: false,
-  showProgressBar: true,
+  showProgressBar: false,
 };
 
 let currentSettings: Settings = { ...defaultSettings };

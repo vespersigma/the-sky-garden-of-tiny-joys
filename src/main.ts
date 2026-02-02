@@ -11,7 +11,7 @@ import {
     applySavedTheme,
     updateProgressBar
 } from './modules/theme';
-import { toggleZenMode, createZenExitButton, isZenMode } from './modules/zenMode';
+import { toggleZenMode, createZenExitButton, isZenMode, applySavedZenMode } from './modules/zenMode';
 import { toggleMenu, renderSidebar } from './modules/navigation';
 import { setupInfiniteScroll, navigateToArc, syncProgress } from './modules/infiniteScroll';
 import { initSettings, toggleSettingsPanel } from './modules/settings';
@@ -180,6 +180,7 @@ async function init(): Promise<void> {
         // 3. Setup UI
         renderSidebar();
         applySavedTheme();
+        applySavedZenMode();
         initSettings();
 
         // Set novel title from manifest

@@ -23,7 +23,15 @@ export function toggleTheme(): void {
 
 export function applySavedTheme(): void {
     const savedTheme = localStorage.getItem('vesper-theme');
-    if (savedTheme === 'silver') {
+
+    if (savedTheme === 'daylight') {
+        document.body.classList.add('daylight');
+        document.body.classList.remove('silver-breath');
+        if (elements.themeToggle) {
+            elements.themeToggle.textContent = '🌙';
+        }
+    } else {
+        // Default to dark/silver theme
         document.body.classList.remove('daylight');
         document.body.classList.add('silver-breath');
         if (elements.themeToggle) {
@@ -51,9 +59,36 @@ export function applySavedFontSize(): void {
 export function updateProgressBar(): void {
     if (!elements.progressBar) return;
 
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    // Find current chapter in viewport
+    const chapters = document.querySelectorAll<HTMLElement>('.chapter-section');
+    let currentChapter: HTMLElement | null = null;
+
+    for (const ch of chapters) {
+        const rect = ch.getBoundingClientRect();
+        // Chapter is in viewport if its top is above viewport center
+        if (rect.top < window.innerHeight / 2 && rect.bottom > 0) {
+            currentChapter = ch;
+        }
+    }
+
+    if (!currentChapter) {
+        elements.progressBar.style.width = '0%';
+        return;
+    }
+
+    // Calculate progress within current chapter
+    const rect = currentChapter.getBoundingClientRect();
+    const chapterHeight = currentChapter.offsetHeight;
+    const scrolledInChapter = -rect.top; // How far we've scrolled past the top
+    const viewableChapter = chapterHeight - window.innerHeight; // Total scrollable distance in chapter
+
+    let progress = 0;
+    if (viewableChapter > 0) {
+        progress = Math.min(100, Math.max(0, (scrolledInChapter / viewableChapter) * 100));
+    } else {
+        // Chapter is shorter than viewport, consider it 100% read
+        progress = 100;
+    }
 
     elements.progressBar.style.width = progress + '%';
 }
