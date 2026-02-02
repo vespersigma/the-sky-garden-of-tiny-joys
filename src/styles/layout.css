@@ -1,0 +1,255 @@
+/* === LAYOUT STYLES ===
+ * App structure, navigation, sidebar, overlays
+ */
+
+#app {
+    max-width: var(--content-max-width, 800px);
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 70px;
+    position: relative;
+}
+
+/* Top Navigation */
+#top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-family: var(--font-sans);
+    background: var(--bg-color);
+    background: linear-gradient(to bottom, var(--bg-color) 85%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#top-nav.nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+#novel-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+#menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+}
+
+.dot {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+}
+
+#controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Sidebar */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background-color: var(--card-bg);
+    z-index: 100;
+    padding: 30px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+}
+
+#sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    font-family: var(--font-sans);
+}
+
+.arc-title {
+    font-weight: 600;
+    margin: 25px 0 10px;
+    color: var(--heading-color);
+    border-bottom: 1px solid var(--text-color);
+    opacity: 0.7;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.chapter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.chapter-item:hover {
+    color: var(--accent-color);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.chapter-number {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    min-width: 24px;
+}
+
+.chapter-name {
+    flex: 1;
+}
+
+.read-indicator {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    opacity: 0.7;
+}
+
+/* Read chapters */
+.chapter-item.read {
+    opacity: 0.6;
+}
+
+.chapter-item.read .chapter-number {
+    color: var(--text-color);
+}
+
+.chapter-item.read:hover {
+    opacity: 1;
+}
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+}
+
+#overlay.hidden {
+    display: none;
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--card-bg);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error Card */
+.error-card {
+    background-color: #fce4e4;
+    color: #c0392b;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e74c3c;
+    text-align: center;
+    max-width: 90%;
+}
+
+.daylight .error-card {
+    background-color: #fff5f5;
+}
+
+.silver-breath .error-card {
+    background-color: #2d1a1a;
+    color: #ff8080;
+}
+
+/* Reading Progress Bar */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), #6dd5ed);
+    z-index: 2000;
+    transition: width 0.1s ease-out;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    #app {
+        padding: 15px;
+        padding-top: 70px;
+    }
+
+    #novel-title {
+        font-size: 0.9rem;
+        max-width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #controls {
+        gap: 6px;
+    }
+
+    #sidebar {
+        width: 85%;
+    }
+}

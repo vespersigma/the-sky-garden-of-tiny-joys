@@ -1,0 +1,55 @@
+/* === BASE STYLES ===
+ * Variables, resets, typography defaults
+ */
+
+:root {
+    --bg-color: #fdf6e3;
+    --text-color: #586e75;
+    --heading-color: #073642;
+    --accent-color: #268bd2;
+    --card-bg: #eee8d5;
+    --font-serif: 'Lora', serif;
+    --font-sans: 'Inter', sans-serif;
+    --content-font-size: 1.15rem;
+    --content-line-height: 1.9;
+    --content-max-width: 800px;
+}
+
+body.silver-breath {
+    --bg-color: #002b36;
+    --text-color: #839496;
+    --heading-color: #93a1a1;
+    --accent-color: #2aa198;
+    --card-bg: #073642;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-serif);
+    line-height: 1.8;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Enterprise Utilities */
+.hidden:not(#sidebar) {
+    display: none !important;
+}

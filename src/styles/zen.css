@@ -1,0 +1,144 @@
+/* === ZEN MODE ===
+ * Distraction-free reading experience
+ */
+
+#zen-toggle {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+}
+
+#zen-toggle:hover {
+    transform: scale(1.1);
+}
+
+body.zen-mode {
+    overflow-x: hidden;
+}
+
+body.zen-mode #top-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+}
+
+body.zen-mode #progress-bar {
+    height: 1px;
+    opacity: 0.3;
+}
+
+body.zen-mode #chapter-nav {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+}
+
+body.zen-mode .comment-preview {
+    opacity: 0.3;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+
+body.zen-mode .comment-preview:hover {
+    opacity: 1;
+    transform: scale(1);
+}
+
+body.zen-mode .chapter-divider {
+    opacity: 0.3;
+}
+
+body.zen-mode .arc-end-card {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+body.zen-mode .arc-end-card:hover {
+    opacity: 1;
+}
+
+body.zen-mode #app {
+    max-width: 700px;
+    padding-top: 60px;
+}
+
+body.zen-mode #content {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+body.zen-mode .chapter-content p {
+    line-height: 2;
+}
+
+#zen-exit {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 1px solid var(--accent-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.zen-mode #zen-exit {
+    opacity: 0.4;
+    pointer-events: auto;
+}
+
+body.zen-mode #zen-exit:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+body.zen-mode::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 60%, var(--bg-color) 100%);
+    opacity: 0.5;
+    z-index: 999;
+}
+
+@keyframes zen-float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+body.zen-mode .chapter-header {
+    animation: zen-float 6s ease-in-out infinite;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    body.zen-mode #app {
+        padding: 40px 15px;
+    }
+
+    body.zen-mode #zen-exit {
+        top: 10px;
+        right: 10px;
+        width: 38px;
+        height: 38px;
+    }
+}

@@ -1,0 +1,316 @@
+/* === READER STYLES ===
+ * Chapter content, typography, comments, navigation
+ */
+
+#reader {
+    min-height: 80vh;
+}
+
+/* Content Typography */
+#content h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--heading-color);
+}
+
+#content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+#content p {
+    margin-bottom: 25px;
+    font-size: inherit;
+    text-align: left;
+}
+
+/* Chapter Navigation */
+#chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-bg);
+    font-family: var(--font-sans);
+    transition: all 0.3s ease;
+}
+
+.nav-btn {
+    padding: 12px 24px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+/* Infinite Scroll Components */
+.chapter-section {
+    margin-bottom: 40px;
+}
+
+.chapter-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+
+.chapter-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.chapter-title {
+    font-size: 1.8rem;
+    color: var(--heading-color);
+    font-weight: 700;
+    margin: 0;
+}
+
+.chapter-content {
+    margin-bottom: 50px;
+    font-size: var(--content-font-size, 1.15rem);
+    line-height: var(--content-line-height, 1.9);
+}
+
+.chapter-content p {
+    margin-bottom: 25px;
+    font-size: inherit;
+    text-align: left;
+}
+
+/* Chapter Divider */
+.chapter-divider {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.chapter-divider::before {
+    content: '• • •';
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    letter-spacing: 8px;
+}
+
+/* Comment Preview */
+.comment-preview {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 40px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.comment-preview:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comment-preview.expanded {
+    cursor: default;
+    transform: none;
+}
+
+.comment-preview.expanded:hover {
+    transform: none;
+}
+
+.comment-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.comment-icon {
+    font-size: 1.5rem;
+}
+
+.comment-text {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--heading-color);
+}
+
+.comment-preview-hint {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin-top: 8px;
+    opacity: 0.8;
+}
+
+.comment-preview.expanded .comment-preview-hint {
+    display: none;
+}
+
+.giscus-frame {
+    margin-top: 20px;
+    min-height: 200px;
+    max-height: 400px;
+    /* Limit to ~3 comments */
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Fade effect at bottom when scrollable */
+.giscus-frame::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to top, var(--card-bg), transparent);
+    pointer-events: none;
+}
+
+/* Arc End Card */
+.arc-end-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%);
+    border: 2px solid var(--accent-color);
+    border-radius: 16px;
+    padding: 50px 30px;
+    text-align: center;
+    margin: 60px 0;
+}
+
+.arc-end-decoration {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.arc-end-title {
+    font-size: 1.5rem;
+    color: var(--heading-color);
+    margin-bottom: 8px;
+}
+
+.arc-end-subtitle {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+.arc-end-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--accent-color);
+    margin: 0 auto 30px;
+}
+
+.arc-end-next {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.arc-end-next-title {
+    font-size: 1.3rem;
+    color: var(--heading-color);
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.arc-end-thanks {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--accent-color);
+    margin-top: 20px;
+}
+
+.arc-end-ongoing {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.arc-continue-btn {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.arc-continue-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.arc-link {
+    font-size: 0.9rem !important;
+    color: var(--accent-color) !important;
+    padding-left: 10px !important;
+}
+
+/* Auto-hide Comments */
+body.hide-comments .comment-preview {
+    display: none !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    #content h1 {
+        font-size: 1.7rem;
+    }
+
+    #content h2 {
+        font-size: 1.3rem;
+    }
+
+    #content p {
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    .nav-btn {
+        padding: 12px 18px;
+        font-size: 0.85rem;
+    }
+
+    .chapter-title {
+        font-size: 1.4rem;
+    }
+
+    .arc-end-card {
+        padding: 35px 20px;
+    }
+
+    .arc-end-decoration {
+        font-size: 2.5rem;
+    }
+
+    .comment-preview {
+        padding: 15px;
+    }
+}

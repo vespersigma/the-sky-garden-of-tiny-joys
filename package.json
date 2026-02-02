@@ -4,10 +4,16 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build",
+        "manifest": "npx tsx scripts/generate-manifest.ts",
+        "build": "npm run manifest && tsc && vite build",
         "preview": "vite preview"
     },
+    "dependencies": {
+        "marked": "^12.0.0"
+    },
     "devDependencies": {
+        "@types/node": "^20.11.0",
+        "tsx": "^4.7.0",
         "typescript": "^5.3.3",
         "vite": "^5.0.12"
     }
