@@ -1,0 +1,18 @@
+{
+  "arcs": [
+    {
+      "number": 1,
+      "name": "The Seed of Silence",
+      "chapters": [
+        {
+          "id": "01",
+          "name": "The First Sensation"
+        },
+        {
+          "id": "02",
+          "name": "The Baker's Warmth"
+        }
+      ]
+    }
+  ]
+}

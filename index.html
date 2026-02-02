@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sky-Garden of Tiny Joys - Vesper Reader</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="daylight">
+    <div id="app">
+        <nav id="top-nav">
+            <button id="menu-toggle" aria-label="Open Menu">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </button>
+            <h1 id="novel-title">The Sky-Garden of Tiny Joys</h1>
+            <button id="theme-toggle" aria-label="Switch Theme">🌙</button>
+        </nav>
+
+        <aside id="sidebar" class="hidden">
+            <div class="sidebar-header">
+                <h2>Library</h2>
+                <button id="close-menu">×</button>
+            </div>
+            <div id="chapter-list">
+                <!-- Chapters will be injected here -->
+            </div>
+        </aside>
+
+        <main id="reader">
+            <div id="welcome-screen" class="hidden">
+                <div class="card">
+                    <p>Welcome back, Mender.</p>
+                    <button id="resume-button">Resume Progress</button>
+                </div>
+            </div>
+            <div id="content">
+                <!-- Story content will be rendered here -->
+            </div>
+            <nav id="chapter-nav">
+                <button id="prev-chapter" class="nav-btn">Previous</button>
+                <div id="chapter-info"></div>
+                <button id="next-chapter" class="nav-btn">Next</button>
+            </nav>
+        </main>
+
+        <div id="overlay" class="hidden"></div>
+    </div>
+    <script src="reader.js"></script>
+</body>
+</html>
