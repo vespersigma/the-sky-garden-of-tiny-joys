@@ -1,17 +1,11 @@
 name: Deploy Content Only
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      # Only run when chapters or assets change (not source code)
-      - 'public/chapters/**'
-      - 'public/manifest.json'
-      - 'public/*.json'
-      - 'public/*.svg'
-      - 'public/*.png'
-      - 'public/*.jpg'
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
 
 permissions:
   contents: read
