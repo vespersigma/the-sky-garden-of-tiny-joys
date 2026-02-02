@@ -30,9 +30,50 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.hidden {
-    display: none !important;
+/* Enterprise Utilities */
+.hidden { display: none !important; }
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--card-bg);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-card {
+    background-color: #fce4e4;
+    color: #c0392b;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e74c3c;
+    text-align: center;
+    max-width: 400px;
+}
+
+.daylight .error-card { background-color: #fff5f5; }
+.silver-breath .error-card { background-color: #2d1a1a; color: #ff8080; }
 
 #app {
     max-width: 800px;
